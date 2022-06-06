@@ -23,7 +23,7 @@ func (r *DeviceItemPostgres) Create(listId int, item notes.DeviceItem) (int, err
 	}
 
 	var itemId int
-	createItemQuery := fmt.Sprintf("INSERT INTO %s (title, description) values ($1, $2) RETURNING id", todoItemsTable)
+	createItemQuery := fmt.Sprintf("INSERT INTO %s (title, description) values ($1, $2) RETURNING id", itemsTable)
 
 	row := tx.QueryRow(createItemQuery, item.Title, item.Description)
 	err = row.Scan(&itemId)
@@ -32,7 +32,7 @@ func (r *DeviceItemPostgres) Create(listId int, item notes.DeviceItem) (int, err
 		return 0, err
 	}
 
-	createListItemsQuery := fmt.Sprintf("INSERT INTO %s (list_id, item_id) values ($1, $2)", listsItemsTable)
+	createListItemsQuery := fmt.Sprintf("INSERT INTO %s (list_id, item_id) values ($1, $2)", devicesItemsTable)
 	_, err = tx.Exec(createListItemsQuery, listId, itemId)
 	if err != nil {
 		tx.Rollback()
@@ -46,7 +46,7 @@ func (r *DeviceItemPostgres) GetAll(userId, listId int) ([]notes.DeviceItem, err
 	var items []notes.DeviceItem
 	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti INNER JOIN %s li on li.item_id = ti.id
 									INNER JOIN %s ul on ul.list_id = li.list_id WHERE li.list_id = $1 AND ul.user_id = $2`,
-		todoItemsTable, listsItemsTable, usersListsTable)
+		itemsTable, devicesItemsTable, usersDevicesTable)
 	if err := r.db.Select(&items, query, listId, userId); err != nil {
 		return nil, err
 	}
@@ -58,7 +58,7 @@ func (r *DeviceItemPostgres) GetById(userId, itemId int) (notes.DeviceItem, erro
 	var item notes.DeviceItem
 	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti INNER JOIN %s li on li.item_id = ti.id
 									INNER JOIN %s ul on ul.list_id = li.list_id WHERE ti.id = $1 AND ul.user_id = $2`,
-		todoItemsTable, listsItemsTable, usersListsTable)
+		itemsTable, devicesItemsTable, usersDevicesTable)
 	if err := r.db.Get(&item, query, itemId, userId); err != nil {
 		return item, err
 	}
@@ -69,7 +69,7 @@ func (r *DeviceItemPostgres) GetById(userId, itemId int) (notes.DeviceItem, erro
 func (r *DeviceItemPostgres) Delete(userId, itemId int) error {
 	query := fmt.Sprintf(`DELETE FROM %s ti USING %s li, %s ul 
 									WHERE ti.id = li.item_id AND li.list_id = ul.list_id AND ul.user_id = $1 AND ti.id = $2`,
-		todoItemsTable, listsItemsTable, usersListsTable)
+		itemsTable, devicesItemsTable, usersDevicesTable)
 	_, err := r.db.Exec(query, userId, itemId)
 	return err
 }
@@ -101,7 +101,7 @@ func (r *DeviceItemPostgres) Update(userId, itemId int, input notes.UpdateDevice
 
 	query := fmt.Sprintf(`UPDATE %s ti SET %s FROM %s li, %s ul
 									WHERE ti.id = li.item_id AND li.list_id = ul.list_id AND ul.user_id = $%d AND ti.id = $%d`,
-		todoItemsTable, setQuery, listsItemsTable, usersListsTable, argId, argId+1)
+		itemsTable, setQuery, devicesItemsTable, usersDevicesTable, argId, argId+1)
 	args = append(args, userId, itemId)
 
 	_, err := r.db.Exec(query, args...)

@@ -3,9 +3,11 @@ package notes
 import "errors"
 
 type Device struct {
-	Id          int    `json:"id" db:"id"`
-	Title       string `json:"title" db:"title" binding:"required"`
-	Description string `json:"description" db:"description"`
+	Id              int    `json:"id" db:"id"`
+	PhoneModel      string `json:"phone_model" db:"phone_model" binding:"required"`
+	PhoneNumber     uint64 `json:"phone_number" db:"phone_number"`
+	Indentification uint64 `json:"identification" db:"identification"`
+	ImeiCode        uint64 `json:"imei_code" db:"imei_code"`
 }
 
 type UsersList struct {
@@ -28,12 +30,14 @@ type DeviceListsItem struct {
 }
 
 type UpdateDeviceInput struct {
-	Title       *string `json:"title"`
-	Description *string `json:"description"`
+	PhoneModel      *string `json:"phone_model" db:"phone_model" binding:"required"`
+	PhoneNumber     *uint64 `json:"phone_number" db:"phone_number"`
+	Indentification *uint64 `json:"identification" db:"identification"`
+	ImeiCode        *uint64 `json:"imei_code" db:"imei_code"`
 }
 
-func (i UpdateDeviceInput) Validate() error {
-	if i.Title == nil && i.Description == nil {
+func (u UpdateDeviceInput) Validate() error {
+	if u.PhoneModel == nil && u.PhoneNumber == nil && u.Indentification == nil && u.ImeiCode == nil {
 		return errors.New("update structure has no values")
 	}
 
