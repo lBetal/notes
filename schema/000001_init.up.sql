@@ -1,4 +1,4 @@
-CREATE TABLE users (
+CREATE TABLE users(
     id serial not null unique, 
     name varchar(255) not null, 
     surname varchar(255) not null, 
@@ -7,21 +7,23 @@ CREATE TABLE users (
     password_hash varchar(255) not null
 );
 
-CREATE TABLE todo_lists
+CREATE TABLE device
 (
-    id          serial       not null unique,
-    title       varchar(255) not null,
-    description varchar(255)
+    id                serial       not null unique,
+    phone_model       varchar(255) not null,
+    phone_number      BIGINT       not null,
+    identification    BIGINT       not null,
+    imei_code         BIGINT       not null
 );
 
-CREATE TABLE users_lists
+CREATE TABLE users_devices
 (
     id      serial                                           not null unique,
     user_id int references users (id) on delete cascade      not null,
-    list_id int references todo_lists (id) on delete cascade not null
+    device_id int references device (id) on delete cascade not null
 );
 
-CREATE TABLE todo_items
+CREATE TABLE items
 (
     id          serial       not null unique,
     title       varchar(255) not null,
@@ -30,9 +32,9 @@ CREATE TABLE todo_items
 );
 
 
-CREATE TABLE lists_items
+CREATE TABLE devices_items
 (
     id      serial                                           not null unique,
-    item_id int references todo_items (id) on delete cascade not null,
-    list_id int references todo_lists (id) on delete cascade not null
+    item_id int references items (id) on delete cascade not null,
+    device_id int references device (id) on delete cascade not null
 );

@@ -1,9 +1,9 @@
-DROP TABLE lists_items;
+DROP TABLE device_items;
 
-DROP TABLE users_lists;
+DROP TABLE users_devices;
 
-DROP TABLE todo_lists;
+DROP TABLE device;
 
 DROP TABLE users;
 
-DROP TABLE todo_items;
+DROP TABLE items;
