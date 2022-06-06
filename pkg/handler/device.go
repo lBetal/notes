@@ -8,20 +8,20 @@ import (
 	"github.com/lBetal/todo"
 )
 
-func (h *Handler) createList(c *gin.Context) {
+func (h *Handler) createDevice(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	var input todo.TodoList
+	var input todo.Device
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	id, err := h.services.TodoList.Create(userId, input)
+	id, err := h.services.Device.Create(userId, input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -32,29 +32,29 @@ func (h *Handler) createList(c *gin.Context) {
 	})
 }
 
-type getAllListsResponse struct {
-	Data []todo.TodoList `json:"data"`
+type getAllDevicesResponse struct {
+	Data []todo.Device `json:"data"`
 }
 
-func (h *Handler) getAllList(c *gin.Context) {
+func (h *Handler) getAllDevice(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	lists, err := h.services.TodoList.GetAll(userId)
+	Devices, err := h.services.Device.GetAll(userId)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllListsResponse{
-		Data: lists,
+	c.JSON(http.StatusOK, getAllDevicesResponse{
+		Data: Devices,
 	})
 }
 
-func (h *Handler) getListById(c *gin.Context) {
+func (h *Handler) getDeviceById(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -67,16 +67,16 @@ func (h *Handler) getListById(c *gin.Context) {
 		return
 	}
 
-	list, err := h.services.TodoList.GetById(userId, id)
+	Device, err := h.services.Device.GetById(userId, id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, list)
+	c.JSON(http.StatusOK, Device)
 }
 
-func (h *Handler) updateList(c *gin.Context) {
+func (h *Handler) updateDevice(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -89,13 +89,13 @@ func (h *Handler) updateList(c *gin.Context) {
 		return
 	}
 
-	var input todo.UpdateListInput
+	var input todo.UpdateDeviceInput
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if err := h.services.TodoList.Update(userId, id, input); err != nil {
+	if err := h.services.Device.Update(userId, id, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -103,7 +103,7 @@ func (h *Handler) updateList(c *gin.Context) {
 	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
 
-func (h *Handler) deleteList(c *gin.Context) {
+func (h *Handler) deleteDevice(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -116,7 +116,7 @@ func (h *Handler) deleteList(c *gin.Context) {
 		return
 	}
 
-	err = h.services.TodoList.Delete(userId, id)
+	err = h.services.Device.Delete(userId, id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

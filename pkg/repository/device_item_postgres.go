@@ -8,15 +8,15 @@ import (
 	"github.com/lBetal/todo"
 )
 
-type TodoItemPostgres struct {
+type DeviceItemPostgres struct {
 	db *sqlx.DB
 }
 
-func NewTodoItemPostgres(db *sqlx.DB) *TodoItemPostgres {
-	return &TodoItemPostgres{db: db}
+func NewDeviceItemPostgres(db *sqlx.DB) *DeviceItemPostgres {
+	return &DeviceItemPostgres{db: db}
 }
 
-func (r *TodoItemPostgres) Create(listId int, item todo.TodoItem) (int, error) {
+func (r *DeviceItemPostgres) Create(listId int, item todo.DeviceItem) (int, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return 0, err
@@ -42,8 +42,8 @@ func (r *TodoItemPostgres) Create(listId int, item todo.TodoItem) (int, error) {
 	return itemId, tx.Commit()
 }
 
-func (r *TodoItemPostgres) GetAll(userId, listId int) ([]todo.TodoItem, error) {
-	var items []todo.TodoItem
+func (r *DeviceItemPostgres) GetAll(userId, listId int) ([]todo.DeviceItem, error) {
+	var items []todo.DeviceItem
 	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti INNER JOIN %s li on li.item_id = ti.id
 									INNER JOIN %s ul on ul.list_id = li.list_id WHERE li.list_id = $1 AND ul.user_id = $2`,
 		todoItemsTable, listsItemsTable, usersListsTable)
@@ -54,8 +54,8 @@ func (r *TodoItemPostgres) GetAll(userId, listId int) ([]todo.TodoItem, error) {
 	return items, nil
 }
 
-func (r *TodoItemPostgres) GetById(userId, itemId int) (todo.TodoItem, error) {
-	var item todo.TodoItem
+func (r *DeviceItemPostgres) GetById(userId, itemId int) (todo.DeviceItem, error) {
+	var item todo.DeviceItem
 	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti INNER JOIN %s li on li.item_id = ti.id
 									INNER JOIN %s ul on ul.list_id = li.list_id WHERE ti.id = $1 AND ul.user_id = $2`,
 		todoItemsTable, listsItemsTable, usersListsTable)
@@ -66,7 +66,7 @@ func (r *TodoItemPostgres) GetById(userId, itemId int) (todo.TodoItem, error) {
 	return item, nil
 }
 
-func (r *TodoItemPostgres) Delete(userId, itemId int) error {
+func (r *DeviceItemPostgres) Delete(userId, itemId int) error {
 	query := fmt.Sprintf(`DELETE FROM %s ti USING %s li, %s ul 
 									WHERE ti.id = li.item_id AND li.list_id = ul.list_id AND ul.user_id = $1 AND ti.id = $2`,
 		todoItemsTable, listsItemsTable, usersListsTable)
@@ -74,7 +74,7 @@ func (r *TodoItemPostgres) Delete(userId, itemId int) error {
 	return err
 }
 
-func (r *TodoItemPostgres) Update(userId, itemId int, input todo.UpdateItemInput) error {
+func (r *DeviceItemPostgres) Update(userId, itemId int, input todo.UpdateDeviceItemInput) error {
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 	argId := 1

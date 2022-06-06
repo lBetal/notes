@@ -10,32 +10,32 @@ type Authorization interface {
 	GetUser(username, password string) (todo.User, error)
 }
 
-type TodoList interface {
-	Create(userId int, list todo.TodoList) (int, error)
-	GetAll(userId int) ([]todo.TodoList, error)
-	GetById(userId, listId int) (todo.TodoList, error)
+type Device interface {
+	Create(userId int, list todo.Device) (int, error)
+	GetAll(userId int) ([]todo.Device, error)
+	GetById(userId, listId int) (todo.Device, error)
 	Delete(userId, listId int) error
-	Update(userId, listId int, input todo.UpdateListInput) error
+	Update(userId, listId int, input todo.UpdateDeviceInput) error
 }
 
-type TodoItem interface {
-	Create(listId int, item todo.TodoItem) (int, error)
-	GetAll(userId, listId int) ([]todo.TodoItem, error)
-	GetById(userId, itemId int) (todo.TodoItem, error)
+type DeviceItem interface {
+	Create(listId int, item todo.DeviceItem) (int, error)
+	GetAll(userId, listId int) ([]todo.DeviceItem, error)
+	GetById(userId, itemId int) (todo.DeviceItem, error)
 	Delete(userId, itemId int) error
-	Update(userId, itemId int, input todo.UpdateItemInput) error
+	Update(userId, itemId int, input todo.UpdateDeviceItemInput) error
 }
 
 type Repository struct {
 	Authorization
-	TodoList
-	TodoItem
+	Device
+	DeviceItem
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
-		TodoList:      NewTodoListPostgres(db),
-		TodoItem:      NewTodoItemPostgres(db),
+		Device:        NewDevicePostgres(db),
+		DeviceItem:    NewDeviceItemPostgres(db),
 	}
 }
