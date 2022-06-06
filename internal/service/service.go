@@ -2,7 +2,7 @@ package service
 
 import (
 	"github.com/lBetal/notes"
-	"github.com/lBetal/notes/pkg/repository"
+	"github.com/lBetal/notes/internal/repository"
 )
 
 type Authorization interface {

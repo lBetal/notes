@@ -8,7 +8,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/lBetal/notes"
-	"github.com/lBetal/notes/pkg/repository"
+	"github.com/lBetal/notes/internal/repository"
 )
 
 const (

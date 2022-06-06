@@ -5,9 +5,9 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/lBetal/notes"
-	"github.com/lBetal/notes/pkg/handler"
-	"github.com/lBetal/notes/pkg/repository"
-	"github.com/lBetal/notes/pkg/service"
+	"github.com/lBetal/notes/internal/handler"
+	"github.com/lBetal/notes/internal/repository"
+	"github.com/lBetal/notes/internal/service"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
