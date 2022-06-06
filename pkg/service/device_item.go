@@ -6,16 +6,16 @@ import (
 )
 
 type DeviceItemService struct {
-	repo     repository.DeviceItem
-	listRepo repository.Device
+	repo       repository.DeviceItem
+	DeviceRepo repository.Device
 }
 
-func NewDeviceItemService(repo repository.DeviceItem, listRepo repository.Device) *DeviceItemService {
-	return &DeviceItemService{repo: repo, listRepo: listRepo}
+func NewDeviceItemService(repo repository.DeviceItem, DeviceRepo repository.Device) *DeviceItemService {
+	return &DeviceItemService{repo: repo, DeviceRepo: DeviceRepo}
 }
 
 func (s *DeviceItemService) Create(userId, listId int, item todo.DeviceItem) (int, error) {
-	_, err := s.listRepo.GetById(userId, listId)
+	_, err := s.DeviceRepo.GetById(userId, listId)
 	if err != nil {
 		// list does not exists or does not belongs to user
 		return 0, err
