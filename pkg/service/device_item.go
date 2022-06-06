@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/lBetal/todo"
-	"github.com/lBetal/todo/pkg/repository"
+	"github.com/lBetal/notes"
+	"github.com/lBetal/notes/pkg/repository"
 )
 
 type DeviceItemService struct {
@@ -14,7 +14,7 @@ func NewDeviceItemService(repo repository.DeviceItem, DeviceRepo repository.Devi
 	return &DeviceItemService{repo: repo, DeviceRepo: DeviceRepo}
 }
 
-func (s *DeviceItemService) Create(userId, listId int, item todo.DeviceItem) (int, error) {
+func (s *DeviceItemService) Create(userId, listId int, item notes.DeviceItem) (int, error) {
 	_, err := s.DeviceRepo.GetById(userId, listId)
 	if err != nil {
 		// list does not exists or does not belongs to user
@@ -24,11 +24,11 @@ func (s *DeviceItemService) Create(userId, listId int, item todo.DeviceItem) (in
 	return s.repo.Create(listId, item)
 }
 
-func (s *DeviceItemService) GetAll(userId, listId int) ([]todo.DeviceItem, error) {
+func (s *DeviceItemService) GetAll(userId, listId int) ([]notes.DeviceItem, error) {
 	return s.repo.GetAll(userId, listId)
 }
 
-func (s *DeviceItemService) GetById(userId, itemId int) (todo.DeviceItem, error) {
+func (s *DeviceItemService) GetById(userId, itemId int) (notes.DeviceItem, error) {
 	return s.repo.GetById(userId, itemId)
 }
 
@@ -36,6 +36,6 @@ func (s *DeviceItemService) Delete(userId, itemId int) error {
 	return s.repo.Delete(userId, itemId)
 }
 
-func (s *DeviceItemService) Update(userId, itemId int, input todo.UpdateDeviceItemInput) error {
+func (s *DeviceItemService) Update(userId, itemId int, input notes.UpdateDeviceItemInput) error {
 	return s.repo.Update(userId, itemId, input)
 }

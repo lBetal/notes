@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/lBetal/todo"
+	"github.com/lBetal/notes"
 	"github.com/sirupsen/logrus"
 )
 
@@ -17,7 +17,7 @@ func NewDevicePostgres(db *sqlx.DB) *DevicePostgres {
 	return &DevicePostgres{db: db}
 }
 
-func (r *DevicePostgres) Create(userId int, list todo.Device) (int, error) {
+func (r *DevicePostgres) Create(userId int, list notes.Device) (int, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return 0, err
@@ -41,8 +41,8 @@ func (r *DevicePostgres) Create(userId int, list todo.Device) (int, error) {
 	return id, tx.Commit()
 }
 
-func (r *DevicePostgres) GetAll(userId int) ([]todo.Device, error) {
-	var lists []todo.Device
+func (r *DevicePostgres) GetAll(userId int) ([]notes.Device, error) {
+	var lists []notes.Device
 
 	query := fmt.Sprintf("SELECT tl.id, tl.title, tl.description FROM %s tl INNER JOIN %s ul on tl.id = ul.list_id WHERE ul.user_id = $1",
 		todoListsTable, usersListsTable)
@@ -51,8 +51,8 @@ func (r *DevicePostgres) GetAll(userId int) ([]todo.Device, error) {
 	return lists, err
 }
 
-func (r *DevicePostgres) GetById(userId, listId int) (todo.Device, error) {
-	var list todo.Device
+func (r *DevicePostgres) GetById(userId, listId int) (notes.Device, error) {
+	var list notes.Device
 
 	query := fmt.Sprintf(`SELECT tl.id, tl.title, tl.description FROM %s tl
 								INNER JOIN %s ul on tl.id = ul.list_id WHERE ul.user_id = $1 AND ul.list_id = $2`,
@@ -70,7 +70,7 @@ func (r *DevicePostgres) Delete(userId, listId int) error {
 	return err
 }
 
-func (r *DevicePostgres) Update(userId, listId int, input todo.UpdateDeviceInput) error {
+func (r *DevicePostgres) Update(userId, listId int, input notes.UpdateDeviceInput) error {
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 	argId := 1

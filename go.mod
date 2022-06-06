@@ -1,4 +1,4 @@
-module github.com/lBetal/todo
+module github.com/lBetal/notes
 
 go 1.17
 

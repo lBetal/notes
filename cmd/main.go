@@ -4,10 +4,10 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/lBetal/todo"
-	"github.com/lBetal/todo/pkg/handler"
-	"github.com/lBetal/todo/pkg/repository"
-	"github.com/lBetal/todo/pkg/service"
+	"github.com/lBetal/notes"
+	"github.com/lBetal/notes/pkg/handler"
+	"github.com/lBetal/notes/pkg/repository"
+	"github.com/lBetal/notes/pkg/service"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -36,7 +36,7 @@ func main() {
 	repos := repository.NewRepository(db)
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
-	srv := new(todo.Server)
+	srv := new(notes.Server)
 	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 		logrus.Fatalf("error occured while running http server: %s", err.Error())
 	}

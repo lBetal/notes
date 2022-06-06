@@ -1,4 +1,4 @@
-package todo
+package notes
 
 import (
 	"context"

@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/lBetal/todo"
+	"github.com/lBetal/notes"
 )
 
 type DeviceItemPostgres struct {
@@ -16,7 +16,7 @@ func NewDeviceItemPostgres(db *sqlx.DB) *DeviceItemPostgres {
 	return &DeviceItemPostgres{db: db}
 }
 
-func (r *DeviceItemPostgres) Create(listId int, item todo.DeviceItem) (int, error) {
+func (r *DeviceItemPostgres) Create(listId int, item notes.DeviceItem) (int, error) {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return 0, err
@@ -42,8 +42,8 @@ func (r *DeviceItemPostgres) Create(listId int, item todo.DeviceItem) (int, erro
 	return itemId, tx.Commit()
 }
 
-func (r *DeviceItemPostgres) GetAll(userId, listId int) ([]todo.DeviceItem, error) {
-	var items []todo.DeviceItem
+func (r *DeviceItemPostgres) GetAll(userId, listId int) ([]notes.DeviceItem, error) {
+	var items []notes.DeviceItem
 	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti INNER JOIN %s li on li.item_id = ti.id
 									INNER JOIN %s ul on ul.list_id = li.list_id WHERE li.list_id = $1 AND ul.user_id = $2`,
 		todoItemsTable, listsItemsTable, usersListsTable)
@@ -54,8 +54,8 @@ func (r *DeviceItemPostgres) GetAll(userId, listId int) ([]todo.DeviceItem, erro
 	return items, nil
 }
 
-func (r *DeviceItemPostgres) GetById(userId, itemId int) (todo.DeviceItem, error) {
-	var item todo.DeviceItem
+func (r *DeviceItemPostgres) GetById(userId, itemId int) (notes.DeviceItem, error) {
+	var item notes.DeviceItem
 	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti INNER JOIN %s li on li.item_id = ti.id
 									INNER JOIN %s ul on ul.list_id = li.list_id WHERE ti.id = $1 AND ul.user_id = $2`,
 		todoItemsTable, listsItemsTable, usersListsTable)
@@ -74,7 +74,7 @@ func (r *DeviceItemPostgres) Delete(userId, itemId int) error {
 	return err
 }
 
-func (r *DeviceItemPostgres) Update(userId, itemId int, input todo.UpdateDeviceItemInput) error {
+func (r *DeviceItemPostgres) Update(userId, itemId int, input notes.UpdateDeviceItemInput) error {
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 	argId := 1

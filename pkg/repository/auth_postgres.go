@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/lBetal/todo"
+	"github.com/lBetal/notes"
 )
 
 type AuthPostgres struct {
@@ -15,7 +15,7 @@ func NewAuthPostgres(db *sqlx.DB) *AuthPostgres {
 	return &AuthPostgres{db: db}
 }
 
-func (r *AuthPostgres) CreateUser(user todo.User) (int, error) {
+func (r *AuthPostgres) CreateUser(user notes.User) (int, error) {
 	var id int
 	query := fmt.Sprintf("INSERT INTO %s (name, username, surname, phone_number, password_hash) values ($1, $2, $3, $4, $5) RETURNING id", usersTable)
 
@@ -27,8 +27,8 @@ func (r *AuthPostgres) CreateUser(user todo.User) (int, error) {
 	return id, nil
 }
 
-func (r *AuthPostgres) GetUser(username, password string) (todo.User, error) {
-	var user todo.User
+func (r *AuthPostgres) GetUser(username, password string) (notes.User, error) {
+	var user notes.User
 	query := fmt.Sprintf("SELECT id FROM %s WHERE username=$1 AND password_hash=$2", usersTable)
 	err := r.db.Get(&user, query, username, password)
 

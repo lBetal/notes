@@ -1,30 +1,30 @@
 package service
 
 import (
-	"github.com/lBetal/todo"
-	"github.com/lBetal/todo/pkg/repository"
+	"github.com/lBetal/notes"
+	"github.com/lBetal/notes/pkg/repository"
 )
 
 type Authorization interface {
-	CreateUser(user todo.User) (int, error)
+	CreateUser(user notes.User) (int, error)
 	GenerateToken(username, password string) (string, error)
 	ParseToken(token string) (int, error)
 }
 
 type Device interface {
-	Create(userId int, list todo.Device) (int, error)
-	GetAll(userId int) ([]todo.Device, error)
-	GetById(userId, listId int) (todo.Device, error)
+	Create(userId int, list notes.Device) (int, error)
+	GetAll(userId int) ([]notes.Device, error)
+	GetById(userId, listId int) (notes.Device, error)
 	Delete(userId, listId int) error
-	Update(userId, listId int, input todo.UpdateDeviceInput) error
+	Update(userId, listId int, input notes.UpdateDeviceInput) error
 }
 
 type DeviceItem interface {
-	Create(userId, listId int, item todo.DeviceItem) (int, error)
-	GetAll(userId, listId int) ([]todo.DeviceItem, error)
-	GetById(userId, itemId int) (todo.DeviceItem, error)
+	Create(userId, listId int, item notes.DeviceItem) (int, error)
+	GetAll(userId, listId int) ([]notes.DeviceItem, error)
+	GetById(userId, itemId int) (notes.DeviceItem, error)
 	Delete(userId, itemId int) error
-	Update(userId, itemId int, input todo.UpdateDeviceItemInput) error
+	Update(userId, itemId int, input notes.UpdateDeviceItemInput) error
 }
 
 type Service struct {

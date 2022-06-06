@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lBetal/todo"
+	"github.com/lBetal/notes"
 )
 
 func (h *Handler) createDevice(c *gin.Context) {
@@ -15,7 +15,7 @@ func (h *Handler) createDevice(c *gin.Context) {
 		return
 	}
 
-	var input todo.Device
+	var input notes.Device
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
@@ -33,7 +33,7 @@ func (h *Handler) createDevice(c *gin.Context) {
 }
 
 type getAllDevicesResponse struct {
-	Data []todo.Device `json:"data"`
+	Data []notes.Device `json:"data"`
 }
 
 func (h *Handler) getAllDevice(c *gin.Context) {
@@ -89,7 +89,7 @@ func (h *Handler) updateDevice(c *gin.Context) {
 		return
 	}
 
-	var input todo.UpdateDeviceInput
+	var input notes.UpdateDeviceInput
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
