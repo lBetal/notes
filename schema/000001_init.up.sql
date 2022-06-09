@@ -1,4 +1,5 @@
-CREATE TABLE users(
+CREATE TABLE users
+(
     id serial not null unique, 
     name varchar(255) not null, 
     surname varchar(255) not null, 
@@ -23,18 +24,16 @@ CREATE TABLE users_devices
     device_id int references device (id) on delete cascade not null
 );
 
-CREATE TABLE items
+CREATE TABLE photo
 (
     id          serial       not null unique,
-    title       varchar(255) not null,
-    description varchar(255),
-    done        boolean      not null default false
+    path       varchar(255) not null
 );
 
 
-CREATE TABLE devices_items
+CREATE TABLE devices_photos
 (
     id      serial                                           not null unique,
-    item_id int references items (id) on delete cascade not null,
+    photo_id int references photo (id) on delete cascade not null,
     device_id int references device (id) on delete cascade not null
 );

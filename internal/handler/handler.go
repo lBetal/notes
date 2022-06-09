@@ -24,26 +24,36 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	api := router.Group("/api", h.userIdentity)
 	{
-		lists := api.Group("/devices")
+		devices := api.Group("/devices")
 		{
-			lists.POST("/", h.createDevice)
-			lists.GET("/", h.getAllDevice)
-			lists.GET("/:id", h.getDeviceById)
-			lists.PUT("/:id", h.updateDevice)
-			lists.DELETE("/:id", h.deleteDevice)
-
-			items := lists.Group(":id/items")
+			devices.POST("/", h.createDevice)
+			devices.GET("/", h.getAllDevice)
+			devices.GET("/:id", h.getDeviceById)
+			devices.PUT("/:id", h.updateDevice)
+			devices.DELETE("/:id", h.deleteDevice)
+			photos := devices.Group(":id/photos")
 			{
-				items.POST("/", h.createItem)
-				items.GET("/", h.getAllItems)
+				photos.POST("/", h.createPhoto)
+				photos.GET("/", h.getAllPhotos)
+				photos.GET("/:photo_id", h.getPhotoById)
+				photos.PUT("/:photo_id", h.updatePhoto)
+				photos.DELETE("/:photo_id", h.deletePhoto)
 			}
-		}
-
-		items := api.Group("items")
-		{
-			items.GET("/:id", h.getItemById)
-			items.PUT("/:id", h.updateItem)
-			items.DELETE("/:id", h.deleteItem)
+			videos := devices.Group(":id/videos")
+			{
+				videos.POST("/")
+				videos.GET("/")
+			}
+			audios := devices.Group(":id/audios")
+			{
+				audios.POST("/")
+				audios.GET("/")
+			}
+			messages := devices.Group(":id/messages")
+			{
+				messages.POST("/")
+				messages.GET("/")
+			}
 		}
 	}
 

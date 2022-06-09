@@ -10,23 +10,21 @@ type Device struct {
 	ImeiCode        uint64 `json:"imei_code" db:"imei_code"`
 }
 
-type UsersList struct {
-	Id     int
-	UserId int
-	ListId int
+type UsersDevice struct {
+	Id       int
+	UserId   int
+	DeviceId int
 }
 
-type DeviceItem struct {
-	Id          int    `json:"id" db:"id"`
-	Title       string `json:"title" db:"title" binding:"required"`
-	Description string `json:"description" db:"description"`
-	Done        bool   `json:"done" db:"done"`
+type Photo struct {
+	Id   int    `json:"id" db:"id"`
+	Path string `json:"path" db:"path" binding:"required"`
 }
 
-type DeviceListsItem struct {
-	Id     int
-	ListId int
-	ItemId int
+type DevicePhoto struct {
+	Id       int
+	DeviceId int
+	PhotoId  int
 }
 
 type UpdateDeviceInput struct {
@@ -44,14 +42,12 @@ func (u UpdateDeviceInput) Validate() error {
 	return nil
 }
 
-type UpdateDeviceItemInput struct {
-	Title       *string `json:"title"`
-	Description *string `json:"description"`
-	Done        *bool   `json:"done"`
+type UpdateDevicePhotoInput struct {
+	Path *string `json:"path"`
 }
 
-func (i UpdateDeviceItemInput) Validate() error {
-	if i.Title == nil && i.Description == nil && i.Done == nil {
+func (i UpdateDevicePhotoInput) Validate() error {
+	if i.Path == nil {
 		return errors.New("update structure has no values")
 	}
 

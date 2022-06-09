@@ -8,26 +8,26 @@ import (
 	"github.com/lBetal/notes"
 )
 
-func (h *Handler) createItem(c *gin.Context) {
+func (h *Handler) createPhoto(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	listId, err := strconv.Atoi(c.Param("id"))
+	deviceId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid list id param")
+		newErrorResponse(c, http.StatusBadRequest, "invalid device id param")
 		return
 	}
 
-	var input notes.DeviceItem
+	var input notes.Photo
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	id, err := h.services.DeviceItem.Create(userId, listId, input)
+	id, err := h.services.DevicePhoto.Create(userId, deviceId, input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -38,70 +38,70 @@ func (h *Handler) createItem(c *gin.Context) {
 	})
 }
 
-func (h *Handler) getAllItems(c *gin.Context) {
+func (h *Handler) getAllPhotos(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	listId, err := strconv.Atoi(c.Param("id"))
+	deviceId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid list id param")
 		return
 	}
 
-	items, err := h.services.DeviceItem.GetAll(userId, listId)
+	photos, err := h.services.DevicePhoto.GetAll(userId, deviceId)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, items)
+	c.JSON(http.StatusOK, photos)
 }
 
-func (h *Handler) getItemById(c *gin.Context) {
+func (h *Handler) getPhotoById(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	itemId, err := strconv.Atoi(c.Param("id"))
+	photoId, err := strconv.Atoi(c.Param("photo_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid list id param")
 		return
 	}
 
-	item, err := h.services.DeviceItem.GetById(userId, itemId)
+	photo, err := h.services.DevicePhoto.GetById(userId, photoId)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, item)
+	c.JSON(http.StatusOK, photo)
 }
 
-func (h *Handler) updateItem(c *gin.Context) {
+func (h *Handler) updatePhoto(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	id, err := strconv.Atoi(c.Param("id"))
+	photoId, err := strconv.Atoi(c.Param("photo_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		return
 	}
 
-	var input notes.UpdateDeviceItemInput
+	var input notes.UpdateDevicePhotoInput
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if err := h.services.DeviceItem.Update(userId, id, input); err != nil {
+	if err := h.services.DevicePhoto.Update(userId, photoId, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -109,20 +109,20 @@ func (h *Handler) updateItem(c *gin.Context) {
 	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
 
-func (h *Handler) deleteItem(c *gin.Context) {
+func (h *Handler) deletePhoto(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	itemId, err := strconv.Atoi(c.Param("id"))
+	photoId, err := strconv.Atoi(c.Param("photo_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid list id param")
 		return
 	}
 
-	err = h.services.DeviceItem.Delete(userId, itemId)
+	err = h.services.DevicePhoto.Delete(userId, photoId)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

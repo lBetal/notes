@@ -19,24 +19,24 @@ type Device interface {
 	Update(userId, listId int, input notes.UpdateDeviceInput) error
 }
 
-type DeviceItem interface {
-	Create(userId, listId int, item notes.DeviceItem) (int, error)
-	GetAll(userId, listId int) ([]notes.DeviceItem, error)
-	GetById(userId, itemId int) (notes.DeviceItem, error)
+type DevicePhoto interface {
+	Create(userId, listId int, item notes.Photo) (int, error)
+	GetAll(userId, listId int) ([]notes.Photo, error)
+	GetById(userId, itemId int) (notes.Photo, error)
 	Delete(userId, itemId int) error
-	Update(userId, itemId int, input notes.UpdateDeviceItemInput) error
+	Update(userId, itemId int, input notes.UpdateDevicePhotoInput) error
 }
 
 type Service struct {
 	Authorization
 	Device
-	DeviceItem
+	DevicePhoto
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
 		Device:        NewDeviceService(repos.Device),
-		DeviceItem:    NewDeviceItemService(repos.DeviceItem, repos.Device),
+		DevicePhoto:   NewDevicePhotoService(repos.DevicePhoto, repos.Device),
 	}
 }

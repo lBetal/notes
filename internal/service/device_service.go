@@ -13,26 +13,26 @@ func NewDeviceService(repo repository.Device) *DeviceService {
 	return &DeviceService{repo: repo}
 }
 
-func (s *DeviceService) Create(userId int, list notes.Device) (int, error) {
-	return s.repo.Create(userId, list)
+func (s *DeviceService) Create(userId int, device notes.Device) (int, error) {
+	return s.repo.Create(userId, device)
 }
 
 func (s *DeviceService) GetAll(userId int) ([]notes.Device, error) {
 	return s.repo.GetAll(userId)
 }
 
-func (s *DeviceService) GetById(userId, listId int) (notes.Device, error) {
-	return s.repo.GetById(userId, listId)
+func (s *DeviceService) GetById(userId, deviceId int) (notes.Device, error) {
+	return s.repo.GetById(userId, deviceId)
 }
 
-func (s *DeviceService) Delete(userId, listId int) error {
-	return s.repo.Delete(userId, listId)
+func (s *DeviceService) Delete(userId, deviceId int) error {
+	return s.repo.Delete(userId, deviceId)
 }
 
-func (s *DeviceService) Update(userId, listId int, input notes.UpdateDeviceInput) error {
+func (s *DeviceService) Update(userId, deviceId int, input notes.UpdateDeviceInput) error {
 	if err := input.Validate(); err != nil {
 		return err
 	}
 
-	return s.repo.Update(userId, listId, input)
+	return s.repo.Update(userId, deviceId, input)
 }

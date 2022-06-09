@@ -11,31 +11,31 @@ type Authorization interface {
 }
 
 type Device interface {
-	Create(userId int, list notes.Device) (int, error)
+	Create(userId int, device notes.Device) (int, error)
 	GetAll(userId int) ([]notes.Device, error)
-	GetById(userId, listId int) (notes.Device, error)
-	Delete(userId, listId int) error
-	Update(userId, listId int, input notes.UpdateDeviceInput) error
+	GetById(userId, deviceId int) (notes.Device, error)
+	Delete(userId, deviceId int) error
+	Update(userId, deviceId int, input notes.UpdateDeviceInput) error
 }
 
-type DeviceItem interface {
-	Create(listId int, item notes.DeviceItem) (int, error)
-	GetAll(userId, listId int) ([]notes.DeviceItem, error)
-	GetById(userId, itemId int) (notes.DeviceItem, error)
-	Delete(userId, itemId int) error
-	Update(userId, itemId int, input notes.UpdateDeviceItemInput) error
+type DevicePhoto interface {
+	Create(deviceId int, photo notes.Photo) (int, error)
+	GetAll(userId, deviceId int) ([]notes.Photo, error)
+	GetById(userId, photoId int) (notes.Photo, error)
+	Delete(userId, photoId int) error
+	Update(userId, photoId int, input notes.UpdateDevicePhotoInput) error
 }
 
 type Repository struct {
 	Authorization
 	Device
-	DeviceItem
+	DevicePhoto
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
 		Device:        NewDevicePostgres(db),
-		DeviceItem:    NewDeviceItemPostgres(db),
+		DevicePhoto:   NewDevicePhotoPostgres(db),
 	}
 }
