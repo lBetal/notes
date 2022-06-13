@@ -41,8 +41,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			}
 			videos := devices.Group(":id/videos")
 			{
-				videos.POST("/")
-				videos.GET("/")
+				videos.POST("/", h.createVideo)
+				videos.GET("/", h.getAllVideos)
+				videos.GET("/:video_id", h.getVideoById)
+				videos.PUT("/:video_id", h.updateVideo)
+				videos.DELETE("/:video_id", h.deleteVideo)
 			}
 			audios := devices.Group(":id/audios")
 			{

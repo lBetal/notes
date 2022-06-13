@@ -12,6 +12,8 @@ const (
 	usersDevicesTable  = "users_devices"
 	photoTable         = "photo"
 	devicesPhotosTable = "devices_photos"
+	videoTable         = "video"
+	devicesVideosTable = "devices_videos"
 )
 
 type Config struct {

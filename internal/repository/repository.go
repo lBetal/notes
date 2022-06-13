@@ -26,10 +26,19 @@ type DevicePhoto interface {
 	Update(userId, photoId int, input notes.UpdateDevicePhotoInput) error
 }
 
+type DeviceVideo interface {
+	Create(deviceId int, photo notes.Video) (int, error)
+	GetAll(userId, deviceId int) ([]notes.Video, error)
+	GetById(userId, videoId int) (notes.Video, error)
+	Delete(userId, videoId int) error
+	Update(userId, videoId int, input notes.UpdateDeviceVideoInput) error
+}
+
 type Repository struct {
 	Authorization
 	Device
 	DevicePhoto
+	DeviceVideo
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -37,5 +46,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		Authorization: NewAuthPostgres(db),
 		Device:        NewDevicePostgres(db),
 		DevicePhoto:   NewDevicePhotoPostgres(db),
+		DeviceVideo:   NewDeviceVideoPostgres(db),
 	}
 }

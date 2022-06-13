@@ -12,25 +12,34 @@ type Authorization interface {
 }
 
 type Device interface {
-	Create(userId int, list notes.Device) (int, error)
+	Create(userId int, deivce notes.Device) (int, error)
 	GetAll(userId int) ([]notes.Device, error)
-	GetById(userId, listId int) (notes.Device, error)
-	Delete(userId, listId int) error
-	Update(userId, listId int, input notes.UpdateDeviceInput) error
+	GetById(userId, deivceId int) (notes.Device, error)
+	Delete(userId, deivceId int) error
+	Update(userId, deivceId int, input notes.UpdateDeviceInput) error
 }
 
 type DevicePhoto interface {
-	Create(userId, listId int, item notes.Photo) (int, error)
-	GetAll(userId, listId int) ([]notes.Photo, error)
-	GetById(userId, itemId int) (notes.Photo, error)
-	Delete(userId, itemId int) error
-	Update(userId, itemId int, input notes.UpdateDevicePhotoInput) error
+	Create(userId, deviceId int, item notes.Photo) (int, error)
+	GetAll(userId, deviceId int) ([]notes.Photo, error)
+	GetById(userId, photoId int) (notes.Photo, error)
+	Delete(userId, photoId int) error
+	Update(userId, photoId int, input notes.UpdateDevicePhotoInput) error
+}
+
+type DeviceVideo interface {
+	Create(userId, deviceId int, item notes.Video) (int, error)
+	GetAll(userId, deviceId int) ([]notes.Video, error)
+	GetById(userId, videoId int) (notes.Video, error)
+	Delete(userId, videoId int) error
+	Update(userId, videoId int, input notes.UpdateDeviceVideoInput) error
 }
 
 type Service struct {
 	Authorization
 	Device
 	DevicePhoto
+	DeviceVideo
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -38,5 +47,6 @@ func NewService(repos *repository.Repository) *Service {
 		Authorization: NewAuthService(repos.Authorization),
 		Device:        NewDeviceService(repos.Device),
 		DevicePhoto:   NewDevicePhotoService(repos.DevicePhoto, repos.Device),
+		DeviceVideo:   NewDeviceVideoService(repos.DeviceVideo, repos.Device),
 	}
 }
