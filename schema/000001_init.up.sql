@@ -51,3 +51,17 @@ CREATE TABLE devices_videos
     video_id int references video (id) on delete cascade not null,
     device_id int references device (id) on delete cascade not null
 );
+
+CREATE TABLE audio
+(
+    id          serial       not null unique,
+    path       varchar(255) not null
+);
+
+
+CREATE TABLE devices_audios
+(
+    id      serial                                           not null unique,
+    audio_id int references audio (id) on delete cascade not null,
+    device_id int references device (id) on delete cascade not null
+);

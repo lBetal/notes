@@ -62,7 +62,7 @@ type Video struct {
 type DeviceVideo struct {
 	Id       int
 	DeviceId int
-	PhotoId  int
+	VideoId  int
 }
 
 type UpdateDeviceVideoInput struct {
@@ -70,6 +70,29 @@ type UpdateDeviceVideoInput struct {
 }
 
 func (i UpdateDeviceVideoInput) Validate() error {
+	if i.Path == nil {
+		return errors.New("update structure has no values")
+	}
+
+	return nil
+}
+
+type Audio struct {
+	Id   int    `json:"id" db:"id"`
+	Path string `json:"path" db:"path" binding:"required"`
+}
+
+type DeviceAudio struct {
+	Id       int
+	DeviceId int
+	AudioId  int
+}
+
+type UpdateDeviceAudioInput struct {
+	Path *string `json:"path"`
+}
+
+func (i UpdateDeviceAudioInput) Validate() error {
 	if i.Path == nil {
 		return errors.New("update structure has no values")
 	}

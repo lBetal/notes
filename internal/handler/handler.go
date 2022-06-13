@@ -49,8 +49,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			}
 			audios := devices.Group(":id/audios")
 			{
-				audios.POST("/")
-				audios.GET("/")
+				audios.POST("/", h.createAudio)
+				audios.GET("/", h.getAllAudios)
+				audios.GET("/:audio_id", h.getAudioById)
+				audios.PUT("/:audio_id", h.updateAudio)
+				audios.DELETE("/:audio_id", h.deleteAudio)
 			}
 			messages := devices.Group(":id/messages")
 			{

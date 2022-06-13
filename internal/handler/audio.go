@@ -8,7 +8,7 @@ import (
 	"github.com/lBetal/notes"
 )
 
-func (h *Handler) createVideo(c *gin.Context) {
+func (h *Handler) createAudio(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -21,13 +21,13 @@ func (h *Handler) createVideo(c *gin.Context) {
 		return
 	}
 
-	var input notes.Video
+	var input notes.Audio
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	id, err := h.services.DeviceVideo.Create(userId, deviceId, input)
+	id, err := h.services.DeviceAudio.Create(userId, deviceId, input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -38,7 +38,7 @@ func (h *Handler) createVideo(c *gin.Context) {
 	})
 }
 
-func (h *Handler) getAllVideos(c *gin.Context) {
+func (h *Handler) getAllAudios(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -51,57 +51,57 @@ func (h *Handler) getAllVideos(c *gin.Context) {
 		return
 	}
 
-	videos, err := h.services.DeviceVideo.GetAll(userId, deviceId)
+	audios, err := h.services.DeviceAudio.GetAll(userId, deviceId)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, videos)
+	c.JSON(http.StatusOK, audios)
 }
 
-func (h *Handler) getVideoById(c *gin.Context) {
+func (h *Handler) getAudioById(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	videoId, err := strconv.Atoi(c.Param("video_id"))
+	audioId, err := strconv.Atoi(c.Param("audio_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid list id param")
 		return
 	}
 
-	video, err := h.services.DeviceVideo.GetById(userId, videoId)
+	audio, err := h.services.DeviceAudio.GetById(userId, audioId)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, video)
+	c.JSON(http.StatusOK, audio)
 }
 
-func (h *Handler) updateVideo(c *gin.Context) {
+func (h *Handler) updateAudio(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	videoId, err := strconv.Atoi(c.Param("video_id"))
+	audioId, err := strconv.Atoi(c.Param("audio_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		return
 	}
 
-	var input notes.UpdateDeviceVideoInput
+	var input notes.UpdateDeviceAudioInput
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if err := h.services.DeviceVideo.Update(userId, videoId, input); err != nil {
+	if err := h.services.DeviceAudio.Update(userId, audioId, input); err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -109,20 +109,20 @@ func (h *Handler) updateVideo(c *gin.Context) {
 	c.JSON(http.StatusOK, statusResponse{"ok"})
 }
 
-func (h *Handler) deleteVideo(c *gin.Context) {
+func (h *Handler) deleteAudio(c *gin.Context) {
 	userId, err := getUserId(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	videoId, err := strconv.Atoi(c.Param("video_id"))
+	audioId, err := strconv.Atoi(c.Param("audio_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid list id param")
 		return
 	}
 
-	err = h.services.DeviceVideo.Delete(userId, videoId)
+	err = h.services.DeviceAudio.Delete(userId, audioId)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
