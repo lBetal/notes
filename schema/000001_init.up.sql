@@ -65,3 +65,17 @@ CREATE TABLE devices_audios
     audio_id int references audio (id) on delete cascade not null,
     device_id int references device (id) on delete cascade not null
 );
+
+CREATE TABLE message
+(
+    id          serial       not null unique,
+    path       varchar(255) not null
+);
+
+
+CREATE TABLE devices_messages
+(
+    id      serial                                           not null unique,
+    message_id int references message (id) on delete cascade not null,
+    device_id int references device (id) on delete cascade not null
+);

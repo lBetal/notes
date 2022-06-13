@@ -42,12 +42,21 @@ type DeviceAudio interface {
 	Update(userId, audioId int, input notes.UpdateDeviceAudioInput) error
 }
 
+type DeviceMessage interface {
+	Create(deviceId int, photo notes.Message) (int, error)
+	GetAll(userId, deviceId int) ([]notes.Message, error)
+	GetById(userId, messageId int) (notes.Message, error)
+	Delete(userId, messageId int) error
+	Update(userId, messageId int, input notes.UpdateDeviceMessageInput) error
+}
+
 type Repository struct {
 	Authorization
 	Device
 	DevicePhoto
 	DeviceVideo
 	DeviceAudio
+	DeviceMessage
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -57,5 +66,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		DevicePhoto:   NewDevicePhotoPostgres(db),
 		DeviceVideo:   NewDeviceVideoPostgres(db),
 		DeviceAudio:   NewDeviceAudioPostgres(db),
+		DeviceMessage: NewDeviceMessagePostgres(db),
 	}
 }

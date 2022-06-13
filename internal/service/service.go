@@ -43,12 +43,21 @@ type DeviceAudio interface {
 	Update(userId, audioId int, input notes.UpdateDeviceAudioInput) error
 }
 
+type DeviceMessage interface {
+	Create(userId, deviceId int, item notes.Message) (int, error)
+	GetAll(userId, deviceId int) ([]notes.Message, error)
+	GetById(userId, messageId int) (notes.Message, error)
+	Delete(userId, messageId int) error
+	Update(userId, messageId int, input notes.UpdateDeviceMessageInput) error
+}
+
 type Service struct {
 	Authorization
 	Device
 	DevicePhoto
 	DeviceVideo
 	DeviceAudio
+	DeviceMessage
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -58,5 +67,6 @@ func NewService(repos *repository.Repository) *Service {
 		DevicePhoto:   NewDevicePhotoService(repos.DevicePhoto, repos.Device),
 		DeviceVideo:   NewDeviceVideoService(repos.DeviceVideo, repos.Device),
 		DeviceAudio:   NewDeviceAudioService(repos.DeviceAudio, repos.Device),
+		DeviceMessage: NewDeviceMessageService(repos.DeviceMessage, repos.Device),
 	}
 }

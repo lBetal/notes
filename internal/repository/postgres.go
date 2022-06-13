@@ -7,15 +7,17 @@ import (
 )
 
 const (
-	usersTable         = "users"
-	deviceTable        = "device"
-	usersDevicesTable  = "users_devices"
-	photoTable         = "photo"
-	devicesPhotosTable = "devices_photos"
-	videoTable         = "video"
-	devicesVideosTable = "devices_videos"
-	audioTable         = "audio"
-	devicesAudiosTable = "devices_audios"
+	usersTable           = "users"
+	deviceTable          = "device"
+	usersDevicesTable    = "users_devices"
+	photoTable           = "photo"
+	devicesPhotosTable   = "devices_photos"
+	videoTable           = "video"
+	devicesVideosTable   = "devices_videos"
+	audioTable           = "audio"
+	devicesAudiosTable   = "devices_audios"
+	messageTable         = "message"
+	devicesMessagesTable = "devices_messages"
 )
 
 type Config struct {

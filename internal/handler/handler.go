@@ -57,8 +57,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			}
 			messages := devices.Group(":id/messages")
 			{
-				messages.POST("/")
-				messages.GET("/")
+				messages.POST("/", h.createMessage)
+				messages.GET("/", h.getAllMessages)
+				messages.GET("/:message_id", h.getMessageById)
+				messages.PUT("/:message_id", h.updateMessage)
+				messages.DELETE("/:message_id", h.deleteMessage)
 			}
 		}
 	}

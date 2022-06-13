@@ -99,3 +99,26 @@ func (i UpdateDeviceAudioInput) Validate() error {
 
 	return nil
 }
+
+type Message struct {
+	Id   int    `json:"id" db:"id"`
+	Path string `json:"path" db:"path" binding:"required"`
+}
+
+type DeviceMessage struct {
+	Id       int
+	DeviceId int
+	AudioId  int
+}
+
+type UpdateDeviceMessageInput struct {
+	Path *string `json:"path"`
+}
+
+func (i UpdateDeviceMessageInput) Validate() error {
+	if i.Path == nil {
+		return errors.New("update structure has no values")
+	}
+
+	return nil
+}
